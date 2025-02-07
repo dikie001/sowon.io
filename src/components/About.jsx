@@ -1,22 +1,27 @@
 import React from 'react';
 
-function AboutSection() {
+function About() {
   return (
-    <div className="bg-gradient-to-r from-yellow-100 to-orange-100 py-12 px-6">
-      <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-4">
-          Welcome to Recipe Finder!
-        </h2>
-        <p className="text-xl text-gray-700 mb-6">
-          Discover a world of flavor at your fingertips. Our app curates the most delectable recipes from around the globe—crafted for every taste and occasion.
+    <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-8">
+      <div className="max-w-3xl bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-10">
+        <h1 className="text-5xl font-extrabold text-center text-gray-800 mb-6">
+          About Recipe Finder
+        </h1>
+        <p className="text-2xl text-gray-700 mb-4">
+          Welcome to Recipe Finder – your cheerful companion for culinary adventures!
         </p>
-        <p className="text-lg text-gray-600">
-          Whether you’re a seasoned chef or a curious beginner, we invite you to explore our ever-growing collection of meals that inspire, satisfy, and delight.
-          Dive in, get creative, and let your culinary adventure begin!
+        <p className="text-xl text-gray-600 mb-4">
+          We believe that every meal is a celebration. Our mission is to inspire you with a delightful collection of recipes that cater to every taste and occasion.
+        </p>
+        <p className="text-xl text-gray-600 mb-4">
+          Whether you’re an experienced chef or a curious beginner, our platform is designed to make exploring, cooking, and sharing recipes an absolute joy.
+        </p>
+        <p className="text-xl text-gray-600">
+          So dive in, get creative, and let Recipe Finder help you bring magic to your kitchen!
         </p>
       </div>
     </div>
   );
 }
 
-export default AboutSection;
+export default About;

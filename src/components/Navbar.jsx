@@ -26,13 +26,13 @@ export const Navbar = () => {
         </div>
       </nav>
       <button
-        className="md:hidden p-2 focus:outline-none absolute top-2 right-2.5"
+        className="md:hidden p-2 focus:outline-none absolute top-2 right-2.5 z-100   "
         onClick={() => setMenuOpen(!menuOpen)}
       >
         {menuOpen ? <AiOutlineClose size={28} /> : <AiOutlineMenu size={28} />}
       </button>
       {menuOpen && (
-        <div className="md:hidden bg-fuchsia-900 w-full justify-center  text-amber-50 font-semibold">
+        <div className="md:hidden bg-fuchsia-900 w-full justify-center  text-amber-50 font-semibold ">
           <ul
             className="flex flex-col justify-center items-center space-y-4 cursor-pointer "
             onClick={() => setMenuOpen(!menuOpen)}
