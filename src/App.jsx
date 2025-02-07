@@ -6,7 +6,7 @@ const App = () => {
   return (
     <><Navbar/>
     <Chatbot/>
-      <h1 className='text-6xl text-orange-800 font-extrabold'>Dickens Omondi</h1>
+   
     </>
   )
 }

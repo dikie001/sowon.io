@@ -1,80 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  // State for recipe list, search term, loading status, error message, and selected recipe details.
+  // States for recipes, search term, loading, error, and the selected recipe
   const [recipes, setRecipes] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState(null);
 
-  // Fetch initial recipes when the component mounts.
+  // Fetch initial recipes by loading the first category's meals
   const fetchInitialRecipes = async () => {
     setLoading(true);
-    setError("");
+    setError('');
     try {
-      // Fetch all meal categories
-      const categoryResponse = await fetch(
-        "https://www.themealdb.com/api/json/v1/1/categories.php"
-      );
+      const categoryResponse = await fetch('https://www.themealdb.com/api/json/v1/1/categories.php');
       const categoryData = await categoryResponse.json();
-      // Choose a category (here we select the first one; you can change this to a preferred category, e.g., "Seafood")
       const firstCategory = categoryData.categories[0].strCategory;
-      // Fetch meals for the chosen category using the filter endpoint.
-      const mealsResponse = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/filter.php?c=${firstCategory}`
-      );
+      const mealsResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${firstCategory}`);
       const mealsData = await mealsResponse.json();
       setRecipes(mealsData.meals);
     } catch (err) {
-      console.error("Error fetching recipes:", err);
-      setError("Failed to fetch recipes.");
+      console.error('Error fetching recipes:', err);
+      setError('Failed to fetch recipes.');
     }
     setLoading(false);
   };
 
-  // Function to search recipes by name.
+  // Search for recipes by name
   const searchRecipes = async (query) => {
     if (!query.trim()) return;
     setLoading(true);
-    setError("");
+    setError('');
     try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(
-          query
-        )}`
-      );
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`);
       const data = await response.json();
       if (data.meals) {
         setRecipes(data.meals);
       } else {
         setRecipes([]);
-        setError("No recipes found.");
+        setError('No recipes found.');
       }
     } catch (err) {
-      console.error("Error searching recipes:", err);
-      setError("Failed to search recipes.");
+      console.error('Error searching recipes:', err);
+      setError('Failed to search recipes.');
     }
     setLoading(false);
   };
 
-  // Function to fetch detailed recipe info using the lookup endpoint.
+  // Fetch detailed recipe info when a recipe card is clicked
   const fetchRecipeDetails = async (id) => {
     setLoading(true);
-    setError("");
+    setError('');
     try {
-      const response = await fetch(
-        `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
-      );
+      const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
       const data = await response.json();
       if (data.meals && data.meals.length > 0) {
         setSelectedRecipe(data.meals[0]);
       } else {
-        setError("Recipe details not found.");
+        setError('Recipe details not found.');
       }
     } catch (err) {
-      console.error("Error fetching recipe details:", err);
-      setError("Failed to fetch recipe details.");
+      console.error('Error fetching recipe details:', err);
+      setError('Failed to fetch recipe details.');
     }
     setLoading(false);
   };
@@ -92,137 +79,97 @@ function App() {
     fetchRecipeDetails(id);
   };
 
-  // Helper function to extract ingredients and their measures.
+  // Helper to extract ingredients and their measures
   const getIngredients = (recipe) => {
     let ingredients = [];
     for (let i = 1; i <= 20; i++) {
       const ingredient = recipe[`strIngredient${i}`];
       const measure = recipe[`strMeasure${i}`];
-      if (ingredient && ingredient.trim() !== "") {
+      if (ingredient && ingredient.trim() !== '') {
         ingredients.push(`${ingredient} - ${measure}`);
       }
     }
     return ingredients;
   };
 
-  // Close the detailed recipe modal.
   const closeModal = () => {
     setSelectedRecipe(null);
   };
 
   return (
-    <div
-      style={{
-        padding: "20px",
-        fontFamily: "Arial, sans-serif",
-        position: "relative",
-      }}
-    >
-      <h1>Recipe Finder</h1>
-      <form onSubmit={handleSearch} style={{ marginBottom: "20px" }}>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Recipe Finder</h1>
+      
+      <form onSubmit={handleSearch} className="flex justify-center mb-8">
         <input
           type="text"
           placeholder="Search recipes..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ padding: "10px", width: "70%", fontSize: "16px" }}
+          className="border border-gray-300 rounded p-3 w-full max-w-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
           type="submit"
-          style={{ padding: "10px 20px", marginLeft: "10px", fontSize: "16px" }}
+          className="ml-4 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
         >
           Search
         </button>
       </form>
-      {loading && <p>Loading recipes...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+      
+      {loading && <p className="text-center text-gray-600">Loading recipes...</p>}
+      {error && <p className="text-center text-red-500">{error}</p>}
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {recipes.map((recipe) => (
           <div
             key={recipe.idMeal}
             onClick={() => handleCardClick(recipe.idMeal)}
-            style={{
-              width: "300px",
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              overflow: "hidden",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-              cursor: "pointer",
-            }}
+            className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-200"
           >
             <img
               src={recipe.strMealThumb}
               alt={recipe.strMeal}
-              style={{ width: "100%", height: "200px", objectFit: "cover" }}
+              className="w-full h-48 object-cover"
             />
-            <div style={{ padding: "10px" }}>
-              <h3 style={{ margin: "0 0 10px" }}>{recipe.strMeal}</h3>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-gray-800">{recipe.strMeal}</h3>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Modal to display detailed recipe information */}
+      {/* Modal for detailed recipe view */}
       {selectedRecipe && (
         <div
           onClick={closeModal}
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-          }}
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            style={{
-              background: "#fff",
-              padding: "20px",
-              borderRadius: "8px",
-              maxWidth: "600px",
-              width: "90%",
-              maxHeight: "80%",
-              overflowY: "auto",
-            }}
+            className="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full relative overflow-y-auto max-h-full"
           >
             <button
               onClick={closeModal}
-              style={{ float: "right", fontSize: "16px" }}
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 text-3xl font-bold"
             >
-              Close
+              &times;
             </button>
-            <h2>{selectedRecipe.strMeal}</h2>
+            <h2 className="text-3xl font-bold mb-4">{selectedRecipe.strMeal}</h2>
             <img
               src={selectedRecipe.strMealThumb}
               alt={selectedRecipe.strMeal}
-              style={{
-                width: "100%",
-                borderRadius: "8px",
-                marginBottom: "20px",
-              }}
+              className="w-[50%] rounded mb-4"
             />
-            <p>
-              <strong>Category:</strong> {selectedRecipe.strCategory}
-            </p>
-            <p>
-              <strong>Area:</strong> {selectedRecipe.strArea}
-            </p>
-            <h3>Ingredients:</h3>
-            <ul>
+            <p className="mb-2"><span className="font-semibold">Category:</span> {selectedRecipe.strCategory}</p>
+            <p className="mb-4"><span className="font-semibold">Area:</span> {selectedRecipe.strArea}</p>
+            <h3 className="text-2xl font-semibold mt-4 mb-2">Ingredients:</h3>
+            <ul className="list-disc list-inside mb-4">
               {getIngredients(selectedRecipe).map((item, index) => (
-                <li key={index}>{item}</li>
+                <li key={index} className="text-gray-700">{item}</li>
               ))}
             </ul>
-            <h3>Instructions:</h3>
-            <p style={{ whiteSpace: "pre-line" }}>
-              {selectedRecipe.strInstructions}
-            </p>
+            <h3 className="text-2xl font-semibold mb-2">Instructions:</h3>
+            <p className="whitespace-pre-line text-gray-700">{selectedRecipe.strInstructions}</p>
           </div>
         </div>
       )}
