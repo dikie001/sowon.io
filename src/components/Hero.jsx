@@ -98,7 +98,7 @@ function Hero() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Recipe Finder</h1>
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">Welcome to Ninja Recipes</h1>
       
       <form onSubmit={handleSearch} className="flex justify-center mb-8">
         <input
