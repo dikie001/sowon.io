@@ -5,7 +5,7 @@ function About() {
     <div className="min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center p-8">
       <div className="max-w-3xl bg-white bg-opacity-90 backdrop-filter backdrop-blur-lg rounded-xl shadow-2xl p-10">
         <h1 className="text-5xl font-extrabold text-center text-gray-800 mb-6">
-          About Recipe Finder
+          About Ninja Recipes
         </h1>
         <p className="text-2xl text-gray-700 mb-4">
           Welcome to Recipe Finder – your cheerful companion for culinary adventures!
