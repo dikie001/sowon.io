@@ -8,7 +8,7 @@ export const Navbar = () => {
     <>
       <nav className="bg-fuchsia-900 h-20 text-center sticky top-0 z-50">
         <div className="container flex justify-between mx-auto items-center">
-          <h1 className="text-5xl text-green-400  font-extrabold">sowon</h1>
+          <h1 className="text-5xl text-green-400  font-extrabold">Ninja Recipes</h1>
           <ul className="hidden md:flex space-x-6 list-none font-semibold text-amber-50">
             <li>
               <Link to="/">Home</Link>
